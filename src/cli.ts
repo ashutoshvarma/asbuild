@@ -56,6 +56,11 @@ export function main(
       description: "Target for compilation",
       default: "release",
     })
+    .option("package", {
+      type: "string",
+      description: "Build only the package specified. (Optional)",
+      opitional: true
+    })
     .option("verbose", {
       boolean: true,
       default: false,

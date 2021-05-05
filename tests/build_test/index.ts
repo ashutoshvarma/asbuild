@@ -3,6 +3,10 @@ import * as loader from "assemblyscript/lib/loader";
 import * as path from "path";
 import * as fs from "fs";
 
+import {WASI} from "wasi";
+const wasi = new WASI();
+const importObject = { wasi_snapshot_preview1: wasi.wasiImport };
+
 let binary: Uint8Array;
 let textFile: string;
 let stderr: string;
@@ -73,11 +77,12 @@ main(args, {
     process.exit(1);
   }
 
-  const theModule = loader.instantiateSync(binary);
+  const theModule = loader.instantiateSync(binary, importObject);
 
   try {
     console.log("running " + process.cwd())
-    theModule.exports._start();
+    // theModule.exports._start();
+    wasi.start(theModule);
   } catch (err) {
     console.error("The wasm module _start() function failed in " + process.cwd());
     console.error(err);

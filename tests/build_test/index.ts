@@ -3,9 +3,6 @@ import * as loader from "assemblyscript/lib/loader";
 import * as path from "path";
 import * as fs from "fs";
 
-import {WASI} from "wasi";
-const wasi = new WASI();
-const importObject = { wasi_snapshot_preview1: wasi.wasiImport };
 
 let binary: Uint8Array;
 let textFile: string;
@@ -47,7 +44,9 @@ main(args, {
     const expected = require(jsonPath);
     let errored = false;
     for (let name of Object.getOwnPropertyNames(expected)) {
-      if (actual[name] !== expected[name]) {
+      if (name === "binaryFile" && actual[name].endsWith(expected[name])) {
+        continue;
+      } else if (actual[name] !== expected[name]) {
         // If object check just first level
         if (typeof actual[name] === 'object' && typeof expected[name] === 'object') {
           let error = false;
@@ -77,12 +76,11 @@ main(args, {
     process.exit(1);
   }
 
-  const theModule = loader.instantiateSync(binary, importObject);
+  const theModule = loader.instantiateSync(binary);
 
   try {
     console.log("running " + process.cwd())
-    // theModule.exports._start();
-    wasi.start(theModule);
+    theModule.exports._start();
   } catch (err) {
     console.error("The wasm module _start() function failed in " + process.cwd());
     console.error(err);

@@ -20,7 +20,7 @@
     "test:full": "yarn test && yarn test:build"
   },
   "peerDependencies": {
-    "assemblyscript": "^0.19",
+    "assemblyscript": "^0.19"
   },
   "dependencies": {
     "@as-pect/cli": "^6.0.0",

@@ -19,9 +19,11 @@
     "test": "yarn build && mocha 'tests/*.ts'",
     "test:full": "yarn test && yarn test:build"
   },
+  "peerDependencies": {
+    "assemblyscript": "^0.19",
+  },
   "dependencies": {
     "@as-pect/cli": "^6.0.0",
-    "assemblyscript": "^0.18.31",
     "chalk": "^4.1.1",
     "eslint": "^7.17.0",
     "yargs": "^15.4.1"
